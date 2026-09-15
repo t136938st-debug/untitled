@@ -1,0 +1,133 @@
+/* pages/order-detail/order-detail.wxss */
+.page {
+  min-height: 100vh;
+  padding-bottom: 140rpx;
+}
+
+/* 状态卡片 */
+.status-card {
+  padding: 40rpx 30rpx;
+  color: #fff;
+  text-align: center;
+}
+
+.status-text {
+  font-size: 40rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.status-desc {
+  font-size: 24rpx;
+  margin-top: 8rpx;
+  opacity: 0.8;
+  display: block;
+}
+
+/* 信息区块 */
+.section {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  border-left: 6rpx solid #e6522c;
+  padding-left: 12rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+}
+
+.label {
+  color: #999;
+}
+
+.value {
+  color: #333;
+}
+
+/* 菜品明细 */
+.detail-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-img {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+.detail-info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.detail-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+}
+
+.detail-qty {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.detail-price {
+  font-size: 28rpx;
+  min-width: 100rpx;
+  text-align: right;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 20rpx;
+  margin-top: 12rpx;
+  border-top: 2rpx solid #f0f0f0;
+  font-size: 28rpx;
+}
+
+.total-amount {
+  font-size: 38rpx;
+}
+
+/* 底部支付按钮 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.06);
+}
+
+.pay-btn {
+  text-align: center;
+  padding: 24rpx;
+  background: #e6522c;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 40rpx;
+}

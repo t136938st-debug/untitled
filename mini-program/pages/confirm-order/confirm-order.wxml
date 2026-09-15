@@ -1,0 +1,42 @@
+<!--pages/confirm-order/confirm-order.wxml - 确认下单页-->
+<view class="page">
+  <!-- 餐桌信息 -->
+  <view class="section">
+    <view class="section-title">餐桌信息</view>
+    <view class="table-info" wx:if="{{tableId}}">
+      <text>桌号：{{tableId}}</text>
+    </view>
+    <view class="table-info warn" wx:else>
+      <text>未选择餐桌，请扫码选择</text>
+    </view>
+  </view>
+
+  <!-- 订单明细 -->
+  <view class="section">
+    <view class="section-title">订单明细</view>
+    <view class="order-items">
+      <view class="order-item" wx:for="{{cartList}}" wx:key="id">
+        <text class="item-name">{{item.dishName}}</text>
+        <text class="item-qty">x{{item.quantity}}</text>
+        <text class="item-subtotal price">¥{{item.price * item.quantity}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section">
+    <view class="section-title">备注</view>
+    <textarea class="remark-input" placeholder="如有特殊要求请备注" bindinput="onRemarkInput" value="{{remark}}" />
+  </view>
+
+  <!-- 合计 & 提交 -->
+  <view class="bottom-bar safe-bottom">
+    <view class="total-section">
+      <text>共 {{cartList.length}} 种商品，合计：</text>
+      <text class="total-price price">¥{{totalPrice}}</text>
+    </view>
+    <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="submitOrder">
+      {{submitting ? '提交中...' : '提交订单'}}
+    </view>
+  </view>
+</view>

@@ -1,0 +1,18 @@
+<!--pages/dish-detail/dish-detail.wxml - 菜品详情页-->
+<view class="page" wx:if="{{dish}}">
+  <!-- 菜品大图 -->
+  <image class="dish-hero" src="{{dish.image || '/images/default-dish.png'}}" mode="aspectFill" />
+
+  <!-- 菜品信息 -->
+  <view class="dish-info">
+    <view class="dish-name">{{dish.name}}</view>
+    <view class="dish-price price">¥{{dish.price}}</view>
+    <view class="dish-desc">{{dish.description || '暂无描述'}}</view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar safe-bottom">
+    <view class="back-btn" bindtap="goBack">返回</view>
+    <view class="add-cart-btn" bindtap="addToCart">加入购物车</view>
+  </view>
+</view>
