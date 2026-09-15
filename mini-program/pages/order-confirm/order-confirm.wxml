@@ -1,0 +1,51 @@
+<!--
+  确认下单页：桌号 + 菜品清单 + 备注 + 提交
+-->
+<view class="page-confirm">
+  <!-- 桌号信息 -->
+  <view class="section" wx:if="{{tableId}}">
+    <view class="section-title">桌号</view>
+    <view class="table-info">{{tableId}} 号桌</view>
+  </view>
+  <view class="section" wx:else>
+    <view class="section-title">桌号</view>
+    <view class="table-info no-table">未绑定桌号（可扫码绑定）</view>
+  </view>
+
+  <!-- 订单菜品 -->
+  <view class="section">
+    <view class="section-title">订单菜品</view>
+    <view class="order-items">
+      <view class="order-item" wx:for="{{cartItems}}" wx:key="id">
+        <text class="item-name">{{item.dishName}}</text>
+        <text class="item-qty">x{{item.quantity}}</text>
+        <text class="item-price price">¥{{item.price * item.quantity}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section">
+    <view class="section-title">备注</view>
+    <textarea
+      class="remark-input"
+      placeholder="如有特殊要求请备注（选填）"
+      maxlength="200"
+      bindinput="onRemarkInput"
+      value="{{remark}}"
+    />
+  </view>
+
+  <!-- 合计 -->
+  <view class="total-row">
+    <text>合计：</text>
+    <text class="price total-amount">¥{{totalAmount}}</text>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area">
+    <button class="btn-primary btn-block submit-btn" bindtap="submitOrder" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交订单'}}
+    </button>
+  </view>
+</view>
