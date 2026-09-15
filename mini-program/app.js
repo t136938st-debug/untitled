@@ -1,43 +1,30 @@
-// app.js - 小程序入口文件
+/**
+ * 小程序入口
+ * 启动时自动微信静默登录
+ */
+const { silentLogin } = require('./utils/request')
+
 App({
   onLaunch() {
-    // 尝试从本地缓存恢复登录态
+    // 检查是否已有 token，没有则静默登录
     const token = wx.getStorageSync('token')
     if (!token) {
-      // 未登录，静默登录
-      this.silentLogin()
+      this.doSilentLogin()
     }
   },
 
   /**
-   * 静默登录：调用 wx.login 获取 code，换取后端 token
+   * 静默登录（失败不阻塞使用）
    */
-  silentLogin() {
-    wx.login({
-      success: (res) => {
-        if (res.code) {
-          wx.request({
-            url: 'http://localhost:8080/wx/login',
-            method: 'POST',
-            data: { code: res.code },
-            success: (resp) => {
-              if (resp.data && resp.data.code === 200) {
-                const data = resp.data.data
-                wx.setStorageSync('token', data.token)
-                wx.setStorageSync('userInfo', data)
-                console.log('静默登录成功', data)
-              } else {
-                console.error('静默登录失败', resp.data)
-              }
-            }
-          })
-        }
-      }
+  doSilentLogin() {
+    silentLogin().then(() => {
+      console.log('静默登录成功')
+    }).catch(err => {
+      console.warn('静默登录失败', err)
     })
   },
 
   globalData: {
-    userInfo: null,
-    tableId: null // 扫码进入时携带的桌号
+    tableId: null
   }
 })

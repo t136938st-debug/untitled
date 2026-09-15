@@ -17,8 +17,7 @@ public class OrderDTO implements Serializable {
     @NotNull(message = "用户ID不能为空")
     private Long userId;
 
-    /** 餐桌ID */
-    @NotNull(message = "餐桌ID不能为空")
+    /** 餐桌ID（可为空，未扫码时） */
     private Long tableId;
 
     /** 备注 */

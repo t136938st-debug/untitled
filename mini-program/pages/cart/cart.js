@@ -1,88 +1,91 @@
-// pages/cart/cart.js - 购物车页面
-const { get, put, del } = require('../../utils/request')
-const auth = require('../../utils/auth')
+/**
+ * 购物车页：加减数量 / 删除 / 清空 / 结算
+ */
+const { get, post } = require('../../utils/request')
+const { API } = require('../../utils/config')
 
 Page({
   data: {
-    cartList: [],
-    totalPrice: '0.00'
+    items: [],
+    totalCount: 0,
+    totalAmount: '0.00'
   },
 
   onShow() {
     this.loadCart()
   },
 
-  /** 加载购物车列表 */
+  /** 加载购物车 */
   loadCart() {
-    const userId = auth.getUserId()
-    if (!userId) return
-    get('/shoppingCart/list', { userId }).then(res => {
-      const cartList = res.data || []
-      const totalPrice = cartList.reduce((sum, item) => {
-        return sum + item.price * item.quantity
-      }, 0).toFixed(2)
-      this.setData({ cartList, totalPrice })
-    })
+    get(API.CART_LIST).then(res => {
+      const data = res.data || {}
+      this.setData({
+        items: data.items || [],
+        totalCount: data.totalCount || 0,
+        totalAmount: (data.totalAmount || 0).toFixed ? (data.totalAmount || 0).toFixed(2) : '0.00'
+      })
+    }).catch(() => {})
   },
 
-  /** 修改数量 */
-  changeQuantity(e) {
-    const { index } = e.currentTarget.dataset
-    const item = this.data.cartList[index]
-    const newQuantity = e.detail
+  /** 增加数量 */
+  onPlus(e) {
+    const item = e.currentTarget.dataset.item
+    post(API.CART_UPDATE, { cartId: item.id, quantity: item.quantity + 1 })
+      .then(() => this.loadCart())
+      .catch(() => {})
+  },
 
-    if (newQuantity <= 0) {
-      // 数量为0，删除
-      this.removeItem(item)
+  /** 减少数量 */
+  onMinus(e) {
+    const item = e.currentTarget.dataset.item
+    if (item.quantity <= 1) {
+      // 数量为 1 时删除
+      this.onRemove(e)
       return
     }
-
-    put('/shoppingCart', {
-      userId: auth.getUserId(),
-      dishId: item.dishId,
-      quantity: newQuantity
-    }).then(() => {
-      item.quantity = newQuantity
-      const cartList = this.data.cartList
-      const totalPrice = cartList.reduce((sum, i) => sum + i.price * i.quantity, 0).toFixed(2)
-      this.setData({ cartList, totalPrice })
-    })
+    post(API.CART_UPDATE, { cartId: item.id, quantity: item.quantity - 1 })
+      .then(() => this.loadCart())
+      .catch(() => {})
   },
 
-  /** 删除购物车项 */
-  removeItem(item) {
-    put('/shoppingCart', {
-      userId: auth.getUserId(),
-      dishId: item.dishId,
-      quantity: 0
-    }).then(() => {
-      wx.showToast({ title: '已移除', icon: 'success' })
-      this.loadCart()
-    })
-  },
-
-  /** 清空购物车 */
-  clearCart() {
+  /** 删除单条 */
+  onRemove(e) {
+    const item = e.currentTarget.dataset.item
     wx.showModal({
       title: '提示',
-      content: '确定清空购物车吗？',
+      content: '确定删除「' + item.dishName + '」？',
       success: (res) => {
         if (res.confirm) {
-          del('/shoppingCart/clean', { userId: auth.getUserId() }).then(() => {
-            wx.showToast({ title: '已清空', icon: 'success' })
-            this.setData({ cartList: [], totalPrice: '0.00' })
-          })
+          post(API.CART_REMOVE, { cartId: item.id })
+            .then(() => this.loadCart())
+            .catch(() => {})
         }
       }
     })
   },
 
-  /** 去下单 */
+  /** 清空购物车 */
+  onClear() {
+    if (this.data.items.length === 0) return
+    wx.showModal({
+      title: '提示',
+      content: '确定清空购物车？',
+      success: (res) => {
+        if (res.confirm) {
+          post(API.CART_CLEAR)
+            .then(() => this.loadCart())
+            .catch(() => {})
+        }
+      }
+    })
+  },
+
+  /** 去结算 */
   goConfirm() {
-    if (this.data.cartList.length === 0) {
+    if (this.data.items.length === 0) {
       wx.showToast({ title: '购物车为空', icon: 'none' })
       return
     }
-    wx.navigateTo({ url: '/pages/confirm-order/confirm-order' })
+    wx.navigateTo({ url: '/pages/order-confirm/order-confirm' })
   }
 })

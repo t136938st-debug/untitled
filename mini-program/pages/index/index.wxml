@@ -1,42 +1,70 @@
-<!--pages/index/index.wxml - 首页：左侧分类 + 右侧菜品列表-->
-<view class="page">
+<!--
+  首页：左侧分类 + 右侧菜品 + 悬浮购物车
+-->
+<view class="page-index">
   <!-- 顶部桌号提示 -->
   <view class="table-bar" wx:if="{{tableId}}">
     <text>当前桌号：{{tableId}}</text>
   </view>
 
-  <view class="content">
-    <!-- 左侧分类栏 -->
+  <view class="main-body">
+    <!-- 左侧分类导航 -->
     <scroll-view class="category-sidebar" scroll-y>
       <view
-        class="category-item {{activeCategoryId === item.id ? 'active' : ''}}"
+        class="cat-item {{currentCategoryId === 0 ? 'active' : ''}}"
+        data-id="{{0}}"
+        bindtap="onCategoryTap"
+      >
+        <text>全部</text>
+      </view>
+      <view
+        class="cat-item {{currentCategoryId === item.id ? 'active' : ''}}"
         wx:for="{{categories}}"
         wx:key="id"
         data-id="{{item.id}}"
-        bindtap="selectCategory"
+        bindtap="onCategoryTap"
       >
-        {{item.name}}
+        <text>{{item.name}}</text>
       </view>
     </scroll-view>
 
     <!-- 右侧菜品列表 -->
     <scroll-view class="dish-list" scroll-y>
-      <view class="dish-card" wx:for="{{dishes}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-        <image class="dish-img" src="{{item.image || '/images/default-dish.png'}}" mode="aspectFill" />
-        <view class="dish-info">
-          <view class="dish-name">{{item.name}}</view>
-          <view class="dish-desc">{{item.description || '暂无描述'}}</view>
+      <view
+        class="dish-card"
+        wx:for="{{dishes}}"
+        wx:key="id"
+      >
+        <view class="dish-img-wrap" bindtap="onDishTap" data-id="{{item.id}}">
+          <image
+            class="dish-img"
+            src="{{item.image || '/images/placeholder.png'}}"
+            mode="aspectFill"
+          />
+        </view>
+        <view class="dish-info" bindtap="onDishTap" data-id="{{item.id}}">
+          <text class="dish-name ellipsis">{{item.name}}</text>
+          <text class="dish-desc ellipsis" wx:if="{{item.description}}">{{item.description}}</text>
           <view class="dish-bottom">
             <text class="price">¥{{item.price}}</text>
-            <view class="add-btn" catchtap="addToCart" data-id="{{item.id}}">+</view>
+            <text class="sales" wx:if="{{item.sales}}">月售{{item.sales}}</text>
           </view>
+        </view>
+        <view class="add-btn" catchtap="onAddCart" data-dish="{{item}}">
+          <text>+</text>
         </view>
       </view>
 
       <!-- 空状态 -->
-      <view class="empty-state" wx:if="{{dishes.length === 0}}">
-        <text>该分类暂无菜品</text>
+      <view class="empty" wx:if="{{dishes.length === 0}}">
+        <text>暂无菜品</text>
       </view>
     </scroll-view>
+  </view>
+
+  <!-- 悬浮购物车按钮 -->
+  <view class="float-cart" wx:if="{{cartCount > 0}}" bindtap="goCart">
+    <text class="cart-icon">🛒</text>
+    <text class="cart-badge">{{cartCount}}</text>
   </view>
 </view>

@@ -71,14 +71,27 @@ public class DishController {
 
     /**
      * 根据分类ID查询菜品列表（仅上架菜品）
+     * categoryId=0 或不传表示查全部
      */
     @GetMapping("/list")
-    public Result<java.util.List<Dish>> listByCategoryId(@RequestParam Long categoryId) {
+    public Result<java.util.List<Dish>> listByCategoryId(@RequestParam(required = false, defaultValue = "0") Long categoryId) {
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Dish::getCategoryId, categoryId)
-                .eq(Dish::getStatus, 1)
+        if (categoryId != null && categoryId > 0) {
+            queryWrapper.eq(Dish::getCategoryId, categoryId);
+        }
+        queryWrapper.eq(Dish::getStatus, 1)
                 .orderByAsc(Dish::getSort);
         return Result.success(dishService.list(queryWrapper));
+    }
+
+    /**
+     * 根据ID查询菜品详情（小程序接口）
+     * GET /dish/detail?id=xxx
+     */
+    @GetMapping("/detail")
+    public Result<Dish> detail(@RequestParam Long id) {
+        Dish dish = dishService.getById(id);
+        return Result.success(dish);
     }
 
     /**

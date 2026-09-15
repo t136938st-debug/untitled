@@ -51,20 +51,8 @@ public class OrderController {
     }
 
     /**
-     * 模拟支付接口
-     * 传入订单ID，直接将订单状态修改为已支付
-     *
-     * @param params 包含 orderId 字段
+     * 模拟支付接口（已迁移到 ApiOrderController /order/simPay）
      */
-    @PostMapping("/simPay")
-    public Result<String> simPay(@RequestBody Map<String, Long> params) {
-        Long orderId = params.get("orderId");
-        if (orderId == null) {
-            return Result.error("订单ID不能为空");
-        }
-        orderService.simPay(orderId);
-        return Result.success("模拟支付成功");
-    }
 
     /**
      * 查询订单详情（包含订单明细）

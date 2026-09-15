@@ -3,37 +3,33 @@
     "pages/index/index",
     "pages/dish-detail/dish-detail",
     "pages/cart/cart",
-    "pages/confirm-order/confirm-order",
-    "pages/orders/orders",
+    "pages/order-confirm/order-confirm",
+    "pages/order-list/order-list",
     "pages/order-detail/order-detail"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#e6522c",
+    "navigationBarBackgroundColor": "#ff6633",
     "navigationBarTitleText": "扫码点餐",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
   },
   "tabBar": {
     "color": "#999",
-    "selectedColor": "#e6522c",
+    "selectedColor": "#ff6633",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "点餐",
-        "iconPath": "images/menu.png",
-        "selectedIconPath": "images/menu-active.png"
+        "text": "点餐"
       },
       {
         "pagePath": "pages/cart/cart",
-        "text": "购物车",
-        "iconPath": "images/cart.png",
-        "selectedIconPath": "images/cart-active.png"
+        "text": "购物车"
       },
       {
-        "pagePath": "pages/orders/orders",
-        "text": "订单",
-        "iconPath": "images/order.png",
-        "selectedIconPath": "images/order-active.png"
+        "pagePath": "pages/order-list/order-list",
+        "text": "订单"
       }
     ]
   },

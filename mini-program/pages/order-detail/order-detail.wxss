@@ -1,133 +1,160 @@
-/* pages/order-detail/order-detail.wxss */
-.page {
+.page-order-detail {
   min-height: 100vh;
-  padding-bottom: 140rpx;
+  background-color: #f5f5f5;
+  padding-bottom: 160rpx;
 }
 
 /* 状态卡片 */
 .status-card {
   padding: 40rpx 30rpx;
   color: #fff;
-  text-align: center;
 }
 
 .status-text {
   font-size: 40rpx;
   font-weight: bold;
   display: block;
+  margin-bottom: 12rpx;
 }
 
-.status-desc {
+.status-tip {
   font-size: 24rpx;
-  margin-top: 8rpx;
   opacity: 0.8;
-  display: block;
 }
 
-/* 信息区块 */
-.section {
-  background: #fff;
+/* 订单信息 */
+.info-section {
+  background-color: #fff;
   margin: 20rpx;
   border-radius: 16rpx;
   padding: 24rpx;
 }
 
-.section-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20rpx;
-  border-left: 6rpx solid #e6522c;
-  padding-left: 12rpx;
-}
-
 .info-row {
   display: flex;
   justify-content: space-between;
-  padding: 12rpx 0;
-  font-size: 26rpx;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
 }
 
-.label {
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-size: 26rpx;
   color: #999;
 }
 
-.value {
+.info-row .value {
+  font-size: 26rpx;
   color: #333;
 }
 
 /* 菜品明细 */
-.detail-item {
+.dish-section {
+  background-color: #fff;
+  margin: 0 20rpx 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.dish-list {
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.dish-item {
   display: flex;
   align-items: center;
-  padding: 16rpx 0;
+  padding: 20rpx 0;
   border-bottom: 1rpx solid #f0f0f0;
 }
 
-.detail-item:last-child {
-  border-bottom: none;
-}
-
-.detail-img {
+.dish-img {
   width: 80rpx;
   height: 80rpx;
   border-radius: 8rpx;
   flex-shrink: 0;
+  margin-right: 16rpx;
 }
 
-.detail-info {
+.dish-info {
   flex: 1;
-  margin-left: 16rpx;
+  min-width: 0;
 }
 
-.detail-name {
-  font-size: 28rpx;
+.dish-name {
+  font-size: 26rpx;
   color: #333;
   display: block;
+  margin-bottom: 4rpx;
 }
 
-.detail-qty {
+.dish-price {
+  font-size: 26rpx;
+}
+
+.dish-qty {
   font-size: 24rpx;
   color: #999;
-}
-
-.detail-price {
-  font-size: 28rpx;
-  min-width: 100rpx;
-  text-align: right;
+  flex-shrink: 0;
+  margin-left: 16rpx;
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding-top: 20rpx;
-  margin-top: 12rpx;
-  border-top: 2rpx solid #f0f0f0;
   font-size: 28rpx;
 }
 
 .total-amount {
-  font-size: 38rpx;
+  font-size: 36rpx;
 }
 
-/* 底部支付按钮 */
-.bottom-bar {
+/* 操作按钮 */
+.action-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
-  padding: 20rpx 24rpx;
-  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.06);
+  display: flex;
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  border-radius: 40rpx;
+  text-align: center;
+  border: none;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #666;
+  margin-right: 20rpx;
 }
 
 .pay-btn {
-  text-align: center;
-  padding: 24rpx;
-  background: #e6522c;
+  background-color: #ff6633;
   color: #fff;
-  font-size: 32rpx;
   font-weight: bold;
-  border-radius: 40rpx;
 }

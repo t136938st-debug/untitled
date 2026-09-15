@@ -1,7 +1,7 @@
-/* pages/cart/cart.wxss */
-.page {
+.page-cart {
   min-height: 100vh;
   padding-bottom: 140rpx;
+  background-color: #f5f5f5;
 }
 
 .cart-list {
@@ -11,9 +11,9 @@
 .cart-item {
   display: flex;
   align-items: center;
-  background: #fff;
+  background-color: #fff;
   border-radius: 16rpx;
-  padding: 20rpx;
+  padding: 24rpx;
   margin-bottom: 16rpx;
 }
 
@@ -22,29 +22,79 @@
   height: 120rpx;
   border-radius: 12rpx;
   flex-shrink: 0;
+  margin-right: 20rpx;
 }
 
 .item-info {
   flex: 1;
-  margin: 0 20rpx;
+  min-width: 0;
 }
 
 .item-name {
   font-size: 28rpx;
   font-weight: bold;
   color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .item-price {
-  font-size: 32rpx;
-  margin-top: 12rpx;
+  font-size: 30rpx;
 }
 
-.item-actions {
+/* 加减控制 */
+.item-ctrl {
+  display: flex;
+  align-items: center;
+  margin-right: 16rpx;
+}
+
+.ctrl-btn {
+  width: 48rpx;
+  height: 48rpx;
+  background-color: #ff6633;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+}
+
+.ctrl-num {
+  min-width: 56rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+/* 删除按钮 */
+.item-del {
   flex-shrink: 0;
 }
 
-/* 底部操作栏 */
+.item-del text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 160rpx 0;
+  color: #999;
+}
+
+.go-order {
+  margin-top: 40rpx;
+  display: inline-block;
+  padding: 20rpx 60rpx;
+}
+
+/* 底部结算栏 */
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -53,9 +103,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  padding: 20rpx 24rpx;
-  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.06);
+  background-color: #fff;
+  padding: 20rpx 30rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
 .bar-left {
@@ -63,13 +114,8 @@
   align-items: baseline;
 }
 
-.total-label {
-  font-size: 28rpx;
-  color: #666;
-}
-
 .total-price {
-  font-size: 40rpx;
+  font-size: 36rpx;
 }
 
 .bar-right {
@@ -78,25 +124,16 @@
 }
 
 .clear-btn {
-  padding: 16rpx 24rpx;
   font-size: 26rpx;
   color: #999;
-  border: 2rpx solid #ddd;
-  border-radius: 30rpx;
-  margin-right: 16rpx;
+  margin-right: 24rpx;
 }
 
 .submit-btn {
-  padding: 16rpx 40rpx;
-  font-size: 28rpx;
+  background-color: #ff6633;
   color: #fff;
-  background: #e6522c;
-  border-radius: 30rpx;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
   font-weight: bold;
-}
-
-/* stepper 组件样式 */
-stepper {
-  display: flex;
-  align-items: center;
 }

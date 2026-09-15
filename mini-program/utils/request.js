@@ -1,22 +1,57 @@
 /**
  * 网络请求封装
- * 自动携带 JWT token，统一处理错误
+ * - 自动从 storage 取 token 放入 header
+ * - 401 时自动静默登录并重试原请求
  */
-
-const BASE_URL = 'http://localhost:8080'
+const { BASE_URL } = require('./config')
 
 /**
- * 封装 wx.request
- * @param {string} url    - 请求路径（不含域名）
- * @param {string} method - 请求方法
- * @param {object} data   - 请求参数
- * @returns Promise
+ * 静默登录（wx.login → 后端换 token）
+ * 返回 Promise
  */
-function request(url, method = 'GET', data = {}) {
+function silentLogin() {
   return new Promise((resolve, reject) => {
-    // 从本地缓存获取 token
-    const token = wx.getStorageSync('token')
+    wx.login({
+      success(loginRes) {
+        wx.request({
+          url: BASE_URL + '/wx/login',
+          method: 'POST',
+          header: { 'Content-Type': 'application/json' },
+          data: { code: loginRes.code },
+          success(res) {
+            if (res.data && res.data.code === 200 && res.data.data) {
+              const token = res.data.data.token
+              wx.setStorageSync('token', token)
+              if (res.data.data.userId) {
+                wx.setStorageSync('userId', res.data.data.userId)
+              }
+              resolve(token)
+            } else {
+              reject(new Error((res.data && res.data.message) || '登录失败'))
+            }
+          },
+          fail(err) {
+            reject(err)
+          }
+        })
+      },
+      fail(err) {
+        reject(err)
+      }
+    })
+  })
+}
 
+/**
+ * 通用请求方法
+ * @param {string} url   - 接口路径（如 /cart/list）
+ * @param {string} method - HTTP 方法
+ * @param {object} data   - 请求数据
+ * @param {boolean} _retry - 内部标记，是否为重试请求
+ */
+function request(url, method, data, _retry) {
+  return new Promise((resolve, reject) => {
+    const token = wx.getStorageSync('token') || ''
     wx.request({
       url: BASE_URL + url,
       method: method,
@@ -26,26 +61,23 @@ function request(url, method = 'GET', data = {}) {
         'Authorization': token ? ('Bearer ' + token) : ''
       },
       success(res) {
-        if (res.statusCode === 200 && res.data) {
-          const result = res.data
-          if (result.code === 200) {
-            resolve(result)
-          } else if (result.code === 401) {
-            // token 过期或无效，重新登录
-            wx.removeStorageSync('token')
-            getApp().silentLogin()
-            reject(result)
-          } else {
-            wx.showToast({ title: result.message || '请求失败', icon: 'none' })
-            reject(result)
-          }
+        if (res.data && res.data.code === 200) {
+          resolve(res.data)
+        } else if (res.data && res.data.code === 401 && !_retry) {
+          // token 失效，自动重新登录后重试
+          silentLogin().then(() => {
+            request(url, method, data, true).then(resolve).catch(reject)
+          }).catch(() => {
+            reject(new Error('登录失效，请重新打开小程序'))
+          })
         } else {
-          wx.showToast({ title: '网络异常', icon: 'none' })
-          reject(res)
+          const msg = (res.data && res.data.message) || '请求失败'
+          wx.showToast({ title: msg, icon: 'none' })
+          reject(new Error(msg))
         }
       },
       fail(err) {
-        wx.showToast({ title: '网络连接失败', icon: 'none' })
+        wx.showToast({ title: '网络异常', icon: 'none' })
         reject(err)
       }
     })
@@ -53,9 +85,13 @@ function request(url, method = 'GET', data = {}) {
 }
 
 // 快捷方法
-const get = (url, data) => request(url, 'GET', data)
-const post = (url, data) => request(url, 'POST', data)
-const put = (url, data) => request(url, 'PUT', data)
-const del = (url, data) => request(url, 'DELETE', data)
+function get(url, data) { return request(url, 'GET', data) }
+function post(url, data) { return request(url, 'POST', data || {}) }
+function put(url, data) { return request(url, 'PUT', data || {}) }
+function del(url, data) { return request(url, 'DELETE', data) }
 
-module.exports = { request, get, post, put, del, BASE_URL }
+module.exports = {
+  get, post, put, del,
+  silentLogin,
+  request
+}

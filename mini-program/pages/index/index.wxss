@@ -1,32 +1,33 @@
-/* pages/index/index.wxss */
-.page {
+.page-index {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
+/* 桌号提示条 */
 .table-bar {
-  background: #fff3e0;
-  padding: 12rpx 24rpx;
+  background-color: #fff3e0;
+  padding: 12rpx 30rpx;
   text-align: center;
   font-size: 24rpx;
-  color: #e6522c;
+  color: #ff6633;
 }
 
-.content {
-  display: flex;
+/* 主体区域：左分类 + 右菜品 */
+.main-body {
   flex: 1;
+  display: flex;
   overflow: hidden;
 }
 
-/* 左侧分类 */
+/* 左侧分类栏 */
 .category-sidebar {
   width: 180rpx;
-  background: #f5f5f5;
+  background-color: #f0f0f0;
   height: 100%;
 }
 
-.category-item {
+.cat-item {
   padding: 30rpx 20rpx;
   text-align: center;
   font-size: 26rpx;
@@ -34,77 +35,125 @@
   border-left: 6rpx solid transparent;
 }
 
-.category-item.active {
-  background: #fff;
-  color: #e6522c;
+.cat-item.active {
+  background-color: #fff;
+  color: #ff6633;
   font-weight: bold;
-  border-left-color: #e6522c;
+  border-left-color: #ff6633;
 }
 
-/* 右侧菜品 */
+/* 右侧菜品列表 */
 .dish-list {
   flex: 1;
   height: 100%;
-  padding: 16rpx;
+  padding: 0 20rpx;
 }
 
 .dish-card {
   display: flex;
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 16rpx;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.dish-img-wrap {
+  width: 150rpx;
+  height: 150rpx;
+  flex-shrink: 0;
+  border-radius: 12rpx;
   overflow: hidden;
-  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  margin-right: 20rpx;
 }
 
 .dish-img {
-  width: 180rpx;
-  height: 180rpx;
-  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .dish-info {
   flex: 1;
-  padding: 16rpx 20rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  min-width: 0;
 }
 
 .dish-name {
   font-size: 30rpx;
   font-weight: bold;
   color: #333;
+  display: block;
+  margin-bottom: 8rpx;
 }
 
 .dish-desc {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: #999;
-  margin-top: 8rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: block;
+  margin-bottom: 12rpx;
 }
 
 .dish-bottom {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12rpx;
+  align-items: baseline;
 }
 
 .dish-bottom .price {
-  font-size: 34rpx;
+  font-size: 32rpx;
 }
 
+.sales {
+  font-size: 22rpx;
+  color: #999;
+  margin-left: 16rpx;
+}
+
+/* 加号按钮 */
 .add-btn {
-  width: 48rpx;
-  height: 48rpx;
-  line-height: 48rpx;
-  text-align: center;
-  background: #e6522c;
-  color: #fff;
+  width: 56rpx;
+  height: 56rpx;
+  background-color: #ff6633;
   border-radius: 50%;
-  font-size: 36rpx;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.add-btn text {
+  color: #fff;
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+/* 悬浮购物车 */
+.float-cart {
+  position: fixed;
+  right: 40rpx;
+  bottom: 200rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #ff6633;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(255, 102, 51, 0.4);
+}
+
+.cart-icon {
+  font-size: 44rpx;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  background-color: #ff3b30;
+  color: #fff;
+  font-size: 20rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  text-align: center;
+  border-radius: 18rpx;
+  padding: 0 8rpx;
 }
